@@ -1,0 +1,47 @@
+
+.container{
+    width:50%;
+    text-align:left;
+    margin: auto;
+    margin-top:20%;
+}
+
+.registration {
+    margin-top: 15%;
+}
+
+input{
+    margin-top:1.5%;
+    margin-bottom:3%;
+}
+
+.registrationInput {
+    margin-top: 1%;
+    margin-bottom: 2%;
+}
+
+label{
+    margin-bottom:5%;
+}
+
+.styledButton {
+    color: white;
+    font-family: 'Poppins', sans-serif;
+    background-color: #3a4042;
+    font-size: 12px;
+    border-radius: 3px;
+    border: 0px;
+    height: 30px;
+    float: right;
+}
+
+#loginButton:hover {
+    background-color: rgba(58,64,66,0.8);
+}
+
+
+
+.passAndReg{
+    text-align:left;
+    font-size: 12px;
+}

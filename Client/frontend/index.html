@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="css/main.css" />
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="chatNav">
+        <div id="userInfo"></div>
+        <span id="username"></span>
+        <br>
+        <input id="friendUsernameInput" type="text" placeholder="Enter username to start conversation">
+        <button class="styledButton" onclick="addFriend()" id="formButton">Add User</button>
+        <br />
+        <span id="friendUsernameError" class="errorMessage"></span>
+        <br />
+        <div id="conversations">
+        </div>
+        <button class="rightBottom" onclick="deleteAccount()" id="deleteAccount">DELETE ACCOUNT</button>
+        <button class="leftBottom" onclick="changeLanguage()" id="changeLanguageButton">ENG</button>
+    </div>
+
+
+    <div id="chatBoxParent">
+        <div class="welcomeText" id="welcomeText">
+            SELECT A USER TO START A CHAT
+        </div>
+    </div>
+    <script type='text/javascript' src='js/languageChangeScript.js'></script>
+    <script>
+        var messages = new Map();
+        var currentlySelectedUser = '';
+        var userToAdd = '';
+        function setClientUsernameAfterRegistration(clientUsername) {
+            document.getElementById("username").innerHTML = clientUsername;
+        }
+        function switchText(elementId) {
+
+            if (currentlySelectedUser == '') {
+                var sendVariable;
+                document.getElementById('chatBoxParent').innerHTML = '<div id="friendHeader"></div >';
+                if (language == "HRV")
+                    sendVariable = "POSALJI";
+                else if (language == "ENG")
+                    sendVariable = "SEND";
+                document.getElementById('chatBoxParent').innerHTML += '<div id="chatBox" class="sendButton">  <div id="chatArea"></div> </div >         <input type="text" id="textBox" rows="4" cols="50" onkeydown="processMessageIfEnterKeyPressed(event, this)" />         <button class="floatRight" id="sendButton" onclick="processMessage()">' + sendVariable +  '</button>';
+            }
+            document.getElementById('chatArea').innerHTML = '';
+            if (messages.get(elementId) != undefined) {
+                document.getElementById('chatArea').innerHTML = messages.get(elementId);
+            }
+            currentlySelectedUser = elementId;
+            document.getElementById('friendHeader').innerHTML = '<img class="friendImage" src="resources/default3.png" alt=""> <div class="friendHeaderUsername">' + currentlySelectedUser + '</div>';
+            document.getElementById("chatArea").scrollTop = document.getElementById("chatArea").scrollHeight;
+        }
+
+        function displayReceivedMessage(receivedMessage) {
+            document.getElementById('chatArea').innerHTML += message;
+            document.getElementById("chatArea").scrollTop = document.getElementById("chatArea").scrollHeight;
+
+        }
+
+        function addMessageToChat() {
+            var message = document.getElementById('textBox').value;
+            for (let i = 30; i < message.length; i += 30) {
+                message = message.slice(0, i) + '<br>' + message.slice(i);
+                i += 4;
+            }
+            var messageToDisplay = '<div class="messageToUser">' + message + '</div>';
+            if (messages.get(currentlySelectedUser) == undefined)
+                messages.set(currentlySelectedUser, messageToDisplay);
+            else
+                messages.set(currentlySelectedUser, messages.get(currentlySelectedUser) + messageToDisplay);
+            document.getElementById('chatArea').innerHTML += messageToDisplay;
+            document.getElementById('textBox').value = '';
+            var messageToSend = '<div class="messageFromUser">' + message + '</div>';
+            document.getElementById("chatArea").scrollTop = document.getElementById("chatArea").scrollHeight;
+            sendTextMessage(currentlySelectedUser, messageToSend);
+        }
+
+        function processMessage() {
+            addMessageToChat();
+        }
+
+        function addFriend() {
+            userToAdd = document.getElementById("friendUsernameInput").value;
+            checkIfFriendExists(userToAdd);
+        }
+
+        function friendExists() {
+            document.getElementById("friendUsernameError").innerHTML = "";
+            document.getElementById("conversations").innerHTML += '<div class="friendUser" id="' + userToAdd + '"onclick="switchText(this.id)"> <img class="friendImage" src="resources/default3.png" alt=""><span class="friendName" id=' + userToAdd + '>' + userToAdd + '</span> </div>';
+            document.getElementById("friendUsernameInput").value = "";
+
+        }
+
+        function friendDoesNotExist() {
+            if(language == "ENG")
+                document.getElementById("friendUsernameError").innerHTML = "Username does not exist.";
+            else if (language == "HRV")
+                document.getElementById("friendUsernameError").innerHTML = "Korisnik ne postoji.";
+        }
+
+        function processMessageIfEnterKeyPressed(event) {
+            if (event.keyCode == 13)
+                addMessageToChat();
+        }
+
+        function displayMessage(username, message) {
+            var friendUserName = username.toString();
+            if (messages.get(friendUserName) == undefined) {
+                document.getElementById("conversations").innerHTML += '<div class="friendUser" id="' + friendUserName + '"onclick="switchText(this.id)"> <img class="friendImage" src="resources/default3.png" alt=""><span class="friendName" id=' + friendUserName + '>' + friendUserName + '</span> </div>';
+                messages.set(friendUserName, message);
+            }
+            else {
+                messages.set(friendUserName, messages.get(friendUserName) + message);
+            }
+            document.getElementById('chatArea').innerHTML = messages.get(friendUserName);
+            document.getElementById("chatArea").scrollTop = document.getElementById("chatArea").scrollHeight;
+        }
+
+        function setEnglish() {
+            document.getElementById("changeLanguageButton").innerHTML = language;
+            document.getElementById("friendUsernameInput").placeholder = "Enter username to start conversation";
+            document.getElementById("formButton").innerHTML = "Add User";
+            document.getElementById("welcomeText").innerHTML = "SELECT A USER TO START A CHAT";
+            document.getElementById("friendUsernameInput").style.width = "75%";
+            document.getElementById("deleteAccount").innerHTML = "DELETE ACCOUNT";
+            document.getElementById("sendButton").innerHTML = "SEND";
+            document.getElementById("friendUsernameError").innerHTML = "Username does not exist.";
+        }
+
+        function setCroatian() {
+            document.getElementById("changeLanguageButton").innerHTML = language;
+            document.getElementById("friendUsernameInput").placeholder = "Unesite korisnicko ime za cavrljanje";
+            document.getElementById("formButton").innerHTML = "Dodaj korisnika";
+            document.getElementById("welcomeText").innerHTML = "IZABERITE KORISNIKA ZA POCETAK";
+            document.getElementById("friendUsernameInput").style.width = "70%";
+            document.getElementById("deleteAccount").innerHTML = "IZBRISI RACUN";
+            document.getElementById("sendButton").innerHTML = "POSALJI";
+            document.getElementById("friendUsernameError").innerHTML = "Korisnik ne postoji.";
+        }
+        function deleteAccount() {
+            cppDeleteAccount();
+        }
+
+    </script>
+
+</body>
+
+</html>
+

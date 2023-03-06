@@ -1,0 +1,63 @@
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="css/main.css" />
+    <link rel="stylesheet" type="text/css" href="css/form.css" />
+</head>
+<body>
+
+    <button class="leftTop" onclick="changeLanguage()" id="changeLanguageButton">ENG</button>
+    <div class="container">
+        <label for="username"><b id="usernameLabel">Username</b></label>
+        <input type="text" placeholder="Enter Username" id="username" required>
+
+        <label for="password"><b id="passwordLabel">Password</b></label>
+        <input type="password" placeholder="Enter Password" id="password" required>
+
+        <button class="styledButton" onclick="tryLoginJS()" id="formButton">LOGIN</button>
+        <br />
+        <br />
+        <br />
+
+        <div class="passAndReg">
+            <span class="psw"><a href="resetPassword.html" id="passwordReset">Forgot password?</a></span>
+            <p><a href="registerForm.html" id="registerLink">Don't have an account?</a></p>
+        </div>
+    </div>
+
+    <script type='text/javascript' src='js/languageChangeScript.js'></script>
+    <script>
+        function tryLoginJS() {
+            var username = document.getElementById("username").value;
+            var password = document.getElementById("password").value;
+            sendLoginMessage(username, password);
+        }
+
+        
+
+        function setEnglish() {
+            document.getElementById("changeLanguageButton").innerHTML = language;
+            document.getElementById("username").placeholder = "Enter Username";
+            document.getElementById("password").placeholder = "Enter Password";
+            document.getElementById("usernameLabel").innerHTML = "Username";
+            document.getElementById("passwordLabel").innerHTML = "Password";
+            document.getElementById("formButton").innerHTML = "LOGIN";
+            document.getElementById("passwordReset").innerHTML = "Forgot password?";
+            document.getElementById("registerLink").innerHTML = "Don't have an account?";
+        }
+
+        function setCroatian() {
+            document.getElementById("changeLanguageButton").innerHTML = language;
+            document.getElementById("username").placeholder = "Unesite korisnicko ime";
+            document.getElementById("password").placeholder = "Unesite lozinku";
+            document.getElementById("usernameLabel").innerHTML = "Korisnicko Ime";
+            document.getElementById("passwordLabel").innerHTML = "Lozinka";
+            document.getElementById("formButton").innerHTML = "PRIJAVA";
+            document.getElementById("passwordReset").innerHTML = "Zaboravili ste lozinku?";
+            document.getElementById("registerLink").innerHTML = "Registrirajte se.";
+        }
+    </script>
+
+
+</body>
+</html>
